@@ -1,7 +1,12 @@
 import requests
 
 def show_user(username):
-    response = requests.get(f"https://api.github.com/users/{username}")
+    try:
+        response = requests.get(f"https://api.github.com/users/{username}", timeout=10)
+    except requests.exceptions.RequestException:
+        print("Нет связи с сервером. Проверьте интернет и адрес")
+        return
+
     if response.status_code == 200:
         data = response.json()
         print("Логин:", data["login"])
